@@ -10,8 +10,7 @@
 dnsmasq_dir="/etc/dnsmasq.d"
 
 info() {
-    echo
-    echo "[Update PiHole Lancache] ($(date)) $1"
+    echo ":: Update PiHole Lancache: $(date): $1"
 }
 
 backup_old() {
@@ -41,6 +40,7 @@ backup_old() {
     mv -v "${dnsmasq_dir}/wargaming.net.conf" "${dnsmasq_dir}/backup"
     mv -v "${dnsmasq_dir}/windowsupdates.conf" "${dnsmasq_dir}/backup"
     mv -v "${dnsmasq_dir}/xboxlive.conf" "${dnsmasq_dir}/backup"
+    return 0
 }
 
 clone_cache() {
@@ -56,7 +56,7 @@ clone_cache() {
 
 configure() {
     info "Copying configuration"
-    cp -av /app/config.json /tmp/cache_domains_scripts/config.json || return 1
+    cp -av /app/config.json /tmp/cache_domains/scripts/config.json || return 1
 
     info "Updating configuration"
     [[ -z $CACHE_IP ]] && export CACHE_IP="127.0.0.1"
@@ -92,7 +92,7 @@ cleanup() {
 
 restore() {
     info "Restoring old domains"
-    if ! mv -v "${dnsmasq_dir}/backup/*.conf" "${dnsmasq_dir}"; then
+    if ! mv -v "${dnsmasq_dir}/backup/*.conf" "${dnsmasq_dir}/"; then
         info "Failed to restore old domains"
     fi
 }
