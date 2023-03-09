@@ -19,10 +19,11 @@ version: "3"
 services:
     update-pihole-lancache:
         image: h0m3/update-pihole-lancache:latest
+        container_name: update-pihole-lancache
         restart: unless-stopped
         volumes:
             - ./pihole/dnsmasq:/etc/dnsmasq.d
-            - /var/run/docker.socker:/var/run/docker.sock
+            - /var/run/docker.sock:/var/run/docker.sock
         environment:
             CACHE_IP: 192.168.1.200
             CONTAINER_RESTART: pihole
