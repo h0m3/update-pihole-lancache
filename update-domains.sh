@@ -45,13 +45,13 @@ backup_old() {
 
 clone_cache() {
     info "Getting cache domain url"
-    [[ -z ${CACHE_DOMAINS_URL} ]] && export CACHE_DOMAINS_URL="https://github.com/uklans/cache-domains"
+    [ -z "${CACHE_DOMAINS_URL}" ] && export CACHE_DOMAINS_URL="https://github.com/uklans/cache-domains"
 
     info "Cloning '${CACHE_DOMAINS_URL}'"
     cwd="$(pwd)"
-    cd /tmp
+    cd /tmp || return 1
     git clone "${CACHE_DOMAINS_URL}" cache_domains || return 1
-    cd "${cwd}"
+    cd "${cwd}" || return 1
 }
 
 configure() {
@@ -59,7 +59,7 @@ configure() {
     cp -av /app/config.json /tmp/cache_domains/scripts/config.json || return 1
 
     info "Updating configuration"
-    [[ -z $CACHE_IP ]] && export CACHE_IP="127.0.0.1"
+    [ -z "$CACHE_IP" ] && export CACHE_IP="127.0.0.1"
     sed -i "s/127.0.0.1/${CACHE_IP}/g" /tmp/cache_domains/scripts/config.json || return 1
 }
 
@@ -67,18 +67,18 @@ generate_domains() {
     info "Generating domain lists (create-dnsmasq.sh)"
 
     cwd="$(pwd)"
-    cd /tmp/cache_domains/scripts/
+    cd /tmp/cache_domains/scripts/ || return 1
     /bin/bash create-dnsmasq.sh || return 1
 
     info "Coyping new domains list"
     mkdir -pv /etc/dnsmasq.d || return 1
     cp -av output/dnsmasq/*.conf "${dnsmasq_dir}" || return 1
 
-    cd "${cwd}"
+    cd "${cwd}" || return 1
 }
 
 restart_container() {
-    if [[ ! -z "${CONTAINER_RESTART}" ]]; then
+    if [ -n "${CONTAINER_RESTART}" ]; then
         info "Restarting docker container '${CONTAINER_RESTART}'"
         docker restart "${CONTAINER_RESTART}" || return 1
     fi
@@ -139,7 +139,7 @@ while true; do
         info "Failed to cleanup temporary data"
     fi
 
-    [[ -z $WAIT_DAYS ]] && export WAIT_DAYS=7
+    [ -z "$WAIT_DAYS" ] && export WAIT_DAYS=7
     info ":: Waiting ${WAIT_DAYS} days"
     sleep ${WAIT_DAYS}d
 done
