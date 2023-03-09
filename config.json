@@ -1,0 +1,14 @@
+{
+    "ips": {
+        "generic": "127.0.0.1"
+    },
+    "cache_domains": {
+        "default": "generic",
+        "blizzard": "generic",
+        "origin": "generic",
+        "riot": "generic",
+        "steam": "generic",
+        "wsus": "generic",
+        "xboxlive": "generic"
+    }
+}
