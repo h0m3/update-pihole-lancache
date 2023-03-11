@@ -82,6 +82,10 @@ Providing that you have all dependencies theres no reason to run the script outs
 
 Also, you need to have the correct permissions to write to your dnsmasq folder and `/tmp`.
 
+## Where can i find the docker container?
+
+Its available at the Docker Hub on [hub.docker.com/r/h0m3/update-pihole-lancache](https://hub.docker.com/r/h0m3/update-pihole-lancache).
+
 ## Note
 
 This script is not affiliated with [Pi-Hole](https://pi-hole.net/), [dnsmasq](https://dnsmasq.org/), [uklans](https://github.com/uklans/) or [lancache](https://lancache.net/). This is just a script i've made to automate my lancache + pihole setup.
